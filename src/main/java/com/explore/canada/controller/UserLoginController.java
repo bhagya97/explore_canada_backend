@@ -21,7 +21,7 @@ public class UserLoginController {
     private static final String USER_EMAIL = "email";
     private static final String USER_PASSWORD = "password";
 
-    @GetMapping(value="/login")
+    @PostMapping(value="/login")
     @ResponseBody
     public UserInfo userLogin(@RequestParam(name = USER_EMAIL) String userEmail,
                                      @RequestParam(name = USER_PASSWORD) String userPassword)

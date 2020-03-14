@@ -48,6 +48,17 @@ public class UserRegistrationController {
         return users;
     }
 
+    @GetMapping(value="/users/user/{emailId}")
+    @ResponseBody
+    public List<UserInfo> getUserByEmailId(@PathVariable String emailId) {
+        UserInfo userInfo = new UserInfo();
+        IUserDAO userDAO = Configuration.instance().getUserDAO();
+        List<UserInfo> users = new ArrayList<>();
+        userInfo.loadUserByEmailId(userDAO,emailId,userInfo);
+        users.add(userInfo);
+        return users;
+    }
+
     @GetMapping(value="/users")
     @ResponseBody
     public List<UserInfo> getAllUsers() {

@@ -1,0 +1,3 @@
+mvn clean install  
+docker build -t explore-canada-microservice .
+docker run -p 8083:8083 -t explore-canada-microservice
