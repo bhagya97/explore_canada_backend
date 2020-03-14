@@ -7,8 +7,8 @@ import java.util.List;
 public interface IUserDAO {
 
     public boolean registerUser(UserInfo userInfo);
-    public UserInfo loadUserById(String userId);
-    public UserInfo loadUserByEmail(String emailId, UserInfo userInfo);
+    public void loadUserById(String userId,UserInfo userInfo);
+    public void loadUserByEmail(String emailId, UserInfo userInfo);
     public boolean updateUser(UserInfo userInfo);
     public boolean deleteUser(UserInfo userInfo);
     public List<UserInfo> loadAllUsers();

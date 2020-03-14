@@ -21,7 +21,7 @@ public class Configuration {
     IUserLogin userLogin;
 
     private Configuration(){
-
+        setAWSCredentials();
         databaseConfiguration = new DefaultDatabaseConfiguration();
         userDAO = new UserDAO();
         passwordEncryption = new BCryptPasswordEncryption();
@@ -37,6 +37,11 @@ public class Configuration {
         return configuration;
     }
 
+
+    private void setAWSCredentials(){
+        System.setProperty("aws.accessKeyId", "AKIAIWGVZIJ52CRYX57Q");
+        System.setProperty("aws.secretKey","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");
+    }
 
     public IDatabaseConfiguration getDatabaseConfiguration() {
         return databaseConfiguration;

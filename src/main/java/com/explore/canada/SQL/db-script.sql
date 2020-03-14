@@ -82,3 +82,38 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS spDeleteUserByEmailID $$
+
+CREATE PROCEDURE spDeleteUserByEmailID (
+    IN emailID VARCHAR(320)
+)
+BEGIN
+    UPDATE USER_INFO SET USER_INFO.USER_IS_ACTIVE = 'N'
+    WHERE USER_INFO.USER_EMAIL = emailID and USER_INFO.USER_IS_ACTIVE = 'Y';
+END $$
+
+DELIMITER ;
+
+
+DELIMITER $$
+
+DROP PROCEDURE IF EXISTS spUpdateUserByEmailID $$
+
+CREATE PROCEDURE spUpdateUserByEmailID (
+    IN userEmail VARCHAR(320),
+    IN userFirstName VARCHAR(100),
+    IN userLastName VARCHAR(100),
+    IN userDateOfBirth VARCHAR(15)
+)
+BEGIN
+    UPDATE USER_INFO SET USER_INFO.USER_FIRST_NAME = userFirstName,
+                         USER_INFO.USER_LAST_NAME = userLastName,
+                         USER_INFO.USER_DATE_OF_BIRTH = userDateOfBirth
+    WHERE USER_INFO.USER_EMAIL = userEmail and USER_INFO.USER_IS_ACTIVE = 'Y';
+END $$
+
+DELIMITER ;

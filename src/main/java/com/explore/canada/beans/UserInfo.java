@@ -103,28 +103,24 @@ public class UserInfo {
         return success;
     }
 
-    public UserInfo loadUserByEmailId(IUserDAO userDb, String emailId, UserInfo userInfo)
+    public void loadUserByEmailId(IUserDAO userDb, String emailId, UserInfo userInfo)
     {
         try {
-                userInfo = userDb.loadUserByEmail(emailId,this);
+                userDb.loadUserByEmail(emailId,userInfo);
         }
         catch (Exception genericException){
             //logger.error(genericException);
-            return null;
         }
-        return userInfo;
     }
 
-    public UserInfo loadUserById(IUserDAO userDb, String userId, UserInfo userInfo)
+    public void loadUserById(IUserDAO userDb, String userId, UserInfo userInfo)
     {
         try {
-            userInfo = userDb.loadUserById(userId);
+                userDb.loadUserById(userId, userInfo);
         }
         catch (Exception genericException){
             //logger.error(genericException);
-            return null;
         }
-        return userInfo;
     }
 
     public List<UserInfo> loadAllUsers(IUserDAO userDb)

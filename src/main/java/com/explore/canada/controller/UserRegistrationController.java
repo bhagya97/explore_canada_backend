@@ -25,20 +25,16 @@ public class UserRegistrationController {
 
     @PostMapping(value="/register")
     @ResponseBody
-    public ServiceResponse registerUser(@RequestBody UserInfo userInfo) {
+    public UserInfo registerUser(@RequestBody UserInfo userInfo) {
         System.out.println("In UserRegistrationResponse");
         IUserDAO userDAO = Configuration.instance().getUserDAO();
         IPasswordEncryption passwordEncryption = Configuration.instance().getPasswordEncryption();
         IUserNotifications userNotifications = Configuration.instance().getUserNotifications();
         boolean success = userInfo.registerUser(userDAO,passwordEncryption,userNotifications);
-        //We are setting the below value just to reply a message back to the caller
-        response = new ServiceResponse();
-        responseMessage = new ArrayList<>();
-        responseCode = success ? ErrorMessage.SUCCESS_CODE : ErrorMessage.ERROR_CODE;
-        responseMessage.add(success ? ErrorMessage.SUCCESS_MESSAGE : ErrorMessage.ERROR_MESSAGE);
-        response.setStatus(responseCode);
-        response.setMessage(responseMessage.toArray(new String[0]));
-        return response;
+        if(success){
+            return userInfo;
+        }
+        return null;
     }
 
     @GetMapping(value="/users/{userId}")
@@ -47,7 +43,8 @@ public class UserRegistrationController {
         UserInfo userInfo = new UserInfo();
         IUserDAO userDAO = Configuration.instance().getUserDAO();
         List<UserInfo> users = new ArrayList<>();
-        users.add(userInfo.loadUserById(userDAO,userId,userInfo));
+        userInfo.loadUserById(userDAO,userId,userInfo);
+        users.add(userInfo);
         return users;
     }
 

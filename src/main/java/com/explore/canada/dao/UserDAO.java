@@ -49,9 +49,8 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public UserInfo loadUserById(String userId) {
+    public void loadUserById(String userId, UserInfo userInfo) {
         ICallStoredProcedure proc = null;
-        UserInfo userInfo = null;
         try
         {
             if(userInfo == null){
@@ -88,17 +87,14 @@ public class UserDAO implements IUserDAO {
                 proc.cleanup();
             }
         }
-        return userInfo;
     }
 
     @Override
-    public UserInfo loadUserByEmail(String emailId, UserInfo userInfo) {
+    public void loadUserByEmail(String emailId, UserInfo userInfo) {
         ICallStoredProcedure proc = null;
+        String userId = null;
         try
         {
-            if(userInfo == null){
-                userInfo = new UserInfo();
-            }
             proc = new CallStoredProcedure("spLoadUserByEmailID(?)");
             proc.setParameter(1, emailId);
             ResultSet results = proc.executeWithResults();
@@ -106,12 +102,7 @@ public class UserDAO implements IUserDAO {
             {
                 while (results.next())
                 {
-                    userInfo.setUserId(results.getString(1));
-                    userInfo.setUserEmail(results.getString(2));
-                    userInfo.setUserPassword(results.getString(3));
-                    userInfo.setUserFirstName(results.getString(4));
-                    userInfo.setUserLastName(results.getString(5));
-                    userInfo.setUserDateOfBirth(results.getString(6));
+                    userId = results.getString(1);
                 }
             }
         }
@@ -130,17 +121,73 @@ public class UserDAO implements IUserDAO {
                 proc.cleanup();
             }
         }
-        return userInfo;
+
+        if(userId != null){
+            loadUserById(userId, userInfo);
+        }
     }
 
     @Override
     public boolean updateUser(UserInfo userInfo) {
-        return false;
+        ICallStoredProcedure proc = null;
+
+        try
+        {
+            proc = new CallStoredProcedure("spUpdateUserByEmailID(?, ?, ?, ?)");
+            proc.setParameter(1, userInfo.getUserEmail());
+            proc.setParameter(2, userInfo.getUserFirstName());
+            proc.setParameter(3, userInfo.getUserLastName());
+            proc.setParameter(4, userInfo.getUserDateOfBirth());
+            proc.execute();
+        }
+        catch (SQLException sqlException)
+        {
+            String errorMessage = String.format("Sql exception occurred: %s",sqlException.getMessage());
+            //logger.error(errorMessage);
+            return false;
+        }
+        catch (Exception genericException){
+            //logger.error(genericException);
+            return false;
+        }
+        finally
+        {
+            if (null != proc)
+            {
+                proc.cleanup();
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean deleteUser(UserInfo userInfo) {
-        return false;
+        ICallStoredProcedure proc = null;
+
+        try
+        {
+            proc = new CallStoredProcedure("spDeleteUserByEmailID(?)");
+            proc.setParameter(1, userInfo.getUserEmail());
+            proc.execute();
+        }
+        catch (SQLException sqlException)
+        {
+            String errorMessage = String.format("Sql exception occurred: %s",sqlException.getMessage());
+            //logger.error(errorMessage);
+            return false;
+        }
+        catch (Exception genericException){
+            //logger.error(genericException);
+            return false;
+        }
+        finally
+        {
+            if (null != proc)
+            {
+                proc.cleanup();
+            }
+        }
+        return true;
     }
 
     @Override
