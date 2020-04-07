@@ -2,10 +2,7 @@ package com.explore.canada.config;
 
 import com.explore.canada.accesscontrol.IUserNotifications;
 import com.explore.canada.accesscontrol.SendNotification;
-import com.explore.canada.dao.IUserDAO;
-import com.explore.canada.dao.IUserLogin;
-import com.explore.canada.dao.UserDAO;
-import com.explore.canada.dao.UserLogin;
+import com.explore.canada.dao.*;
 import com.explore.canada.database.DefaultDatabaseConfiguration;
 import com.explore.canada.database.IDatabaseConfiguration;
 import com.explore.canada.security.BCryptPasswordEncryption;
@@ -19,6 +16,7 @@ public class Configuration {
     IPasswordEncryption passwordEncryption;
     IUserNotifications userNotifications;
     IUserLogin userLogin;
+    ISearchDAO searchDAO;
 
     private Configuration(){
         setAWSCredentials();
@@ -27,6 +25,7 @@ public class Configuration {
         passwordEncryption = new BCryptPasswordEncryption();
         userNotifications = new SendNotification();
         userLogin = new UserLogin();
+        searchDAO = new SearchDAO();
     }
 
     public static Configuration instance(){
@@ -82,5 +81,13 @@ public class Configuration {
 
     public void setUserLogin(IUserLogin userLogin) {
         this.userLogin = userLogin;
+    }
+
+    public ISearchDAO getSearchDAO() {
+        return searchDAO;
+    }
+
+    public void setSearchDAO(ISearchDAO searchDAO) {
+        this.searchDAO = searchDAO;
     }
 }

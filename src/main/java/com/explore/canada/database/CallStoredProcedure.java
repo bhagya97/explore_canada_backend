@@ -2,6 +2,8 @@ package com.explore.canada.database;
 
 //import org.apache.log4j.Logger;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.*;
 
 public class CallStoredProcedure implements ICallStoredProcedure
@@ -68,6 +70,11 @@ public class CallStoredProcedure implements ICallStoredProcedure
 	public void setParameter(int paramIndex, long value) throws SQLException
 	{
 		statement.setLong(paramIndex, value);
+	}
+
+	public void setParameter(int paramIndex, float value) throws SQLException
+	{
+		statement.setFloat(paramIndex, value);
 	}
 
 	public void registerOutputParameterLong(int paramIndex) throws SQLException

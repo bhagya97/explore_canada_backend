@@ -1,8 +1,14 @@
-mvn clean install  
+# create docker image
+mvn clean install
 docker build -t explore-canada-microservice .
-docker run -p 8083:8083 -t explore-canada-microservice
+# run docker image on local machine
+docker run -p 5000:5000 -t explore-canada-microservice
 
 
+# publish docker image to docker hub
 mvn clean install  
 docker image build -t explore-canada-microservice .
-docker container run --publish 8083:8083 --detach --name explore-canada explore-canada-microservice
+docker container run --publish 5000:5000 --detach --name explore-canada explore-canada-microservice
+
+docker run -d -p 5000:5000 --name explore-canada explore-canada-microservice
+

@@ -9,6 +9,7 @@ public interface ICallStoredProcedure {
 	public void setParameter(int paramIndex, String value) throws SQLException;
 	public void registerOutputParameterString(int paramIndex) throws SQLException;
 	public void setParameter(int paramIndex, long value) throws SQLException;
+	public void setParameter(int paramIndex, float value) throws SQLException;
 	public void registerOutputParameterLong(int paramIndex) throws SQLException;
 	public ResultSet executeWithResults() throws SQLException;
 	public void execute() throws SQLException;

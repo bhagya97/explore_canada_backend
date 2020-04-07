@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api", produces = { MediaType.APPLICATION_JSON_VALUE })
@@ -20,6 +21,7 @@ import java.util.List;
 public class UserLoginController {
     private static final String USER_EMAIL = "email";
     private static final String USER_PASSWORD = "password";
+    private static final String SECRET = "secret";
 
     @PostMapping(value="/login")
     @ResponseBody
@@ -34,8 +36,28 @@ public class UserLoginController {
         IUserLogin userLogin = Configuration.instance().getUserLogin();
         success = userLogin.authenticate(userEmail,userPassword,passwordEncryption,userDAO, userInfo);
         if(success){
+            String oneTimePassword = UUID.randomUUID().toString().substring(0,5);
+            userLogin.setOneTimePassword(userEmail,oneTimePassword);
+            userNotifications.sendOneTimePasswordNotification(userInfo,oneTimePassword);
             return userInfo;
         }
         return null;
+    }
+
+    @PostMapping(value="/validateotp")
+    @ResponseBody
+    public UserInfo validateOneTimePassword(@RequestParam(name = USER_EMAIL) String userEmail,
+                                          @RequestParam(name = SECRET) String userSecret)
+    {
+        UserInfo userInfo = null;
+        IUserDAO userDAO = null;
+        IUserLogin userLogin = Configuration.instance().getUserLogin();
+        if(userLogin.getOneTimePassword().equalsIgnoreCase(userSecret) &&
+                userLogin.getUserEmail().equalsIgnoreCase(userEmail)){
+            userInfo = new UserInfo();
+            userDAO = Configuration.instance().getUserDAO();
+            userDAO.loadUserByEmail(userEmail,userInfo);
+        }
+        return userInfo;
     }
 }

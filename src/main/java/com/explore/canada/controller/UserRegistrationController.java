@@ -19,10 +19,6 @@ import java.util.List;
 @Validated
 public class UserRegistrationController {
 
-    ServiceResponse response;
-    int responseCode;
-    List<String> responseMessage;
-
     @PostMapping(value="/register")
     @ResponseBody
     public UserInfo registerUser(@RequestBody UserInfo userInfo) {
@@ -39,32 +35,28 @@ public class UserRegistrationController {
 
     @GetMapping(value="/users/{userId}")
     @ResponseBody
-    public List<UserInfo> getUserById(@PathVariable String userId) {
+    public UserInfo getUserById(@PathVariable String userId) {
         UserInfo userInfo = new UserInfo();
         IUserDAO userDAO = Configuration.instance().getUserDAO();
-        List<UserInfo> users = new ArrayList<>();
         userInfo.loadUserById(userDAO,userId,userInfo);
-        users.add(userInfo);
-        return users;
+        return userInfo;
     }
 
     @GetMapping(value="/users/user/{emailId}")
     @ResponseBody
-    public List<UserInfo> getUserByEmailId(@PathVariable String emailId) {
+    public UserInfo getUserByEmailId(@PathVariable String emailId) {
         UserInfo userInfo = new UserInfo();
         IUserDAO userDAO = Configuration.instance().getUserDAO();
-        List<UserInfo> users = new ArrayList<>();
         userInfo.loadUserByEmailId(userDAO,emailId,userInfo);
-        users.add(userInfo);
-        return users;
+        return userInfo;
     }
 
     @GetMapping(value="/users")
     @ResponseBody
     public List<UserInfo> getAllUsers() {
+        System.out.println("In getAllUsers controller");
         UserInfo userInfo = new UserInfo();
         IUserDAO userDAO = Configuration.instance().getUserDAO();
-        List<UserInfo> users = new ArrayList<>();
         return userInfo.loadAllUsers(userDAO);
     }
 }

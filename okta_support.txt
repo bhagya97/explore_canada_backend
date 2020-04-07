@@ -1,0 +1,6 @@
+Metadata URI https://dev-396881.okta.com/oauth2/default/.well-known/oauth-authorization-server
+
+Aws = ExploreCanadaMicroservice-env.eba-rjnkpwdc.us-west-2.elasticbeanstalk.com
+
+Client ID:0oa57q9elwOz3fp8K4x6
+Client Secret: Bt7rpuk46QTY1OpWdj0SYKE1IjDh3LBLId7sKId9
